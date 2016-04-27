@@ -120,6 +120,10 @@
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/org.tachyonproject/tachyon-underfs-local/jars/tachyon-underfs-local-0.8.2.jar"/>
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.razorvine/pyrolite/jars/pyrolite-4.9.jar"/>
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.sf.py4j/py4j/jars/py4j-0.9.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/org.apache.spark/spark-graphx_2.10/jars/spark-graphx_2.10-1.6.1.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/com.github.fommil.netlib/core/jars/core-1.1.2.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.sourceforge.f2j/arpack_combined_all/jars/arpack_combined_all-0.1.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.sourceforge.f2j/arpack_combined_all/jars/arpack_combined_all-0.1-javadoc.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="output" path="bin"/>
 </classpath>
