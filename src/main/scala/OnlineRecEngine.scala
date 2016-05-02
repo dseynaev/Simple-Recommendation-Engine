@@ -21,11 +21,11 @@ object OnlineRecEngine {
                 
             val products = line.split(",").map(_.toInt).toVector
             
-            // val rec = breadthFirstSearch(sc, graph, 4, products(0)).take(11).tail
+            // val rec = breadthFirstSearch(sc, graph, 4, products(0)).tail
             val rec = multiBFS(sc, graph, 4, products).filter({case (id,_) => !products.contains(id)})
-            println("recommendation:")
+            print("recommendation:")
             
-            println(rec.take(11).map(v => v).mkString("\n"))
+            println(rec.take(10).map(v => v._1).mkString(", "))
         }
     }
     
