@@ -11,8 +11,8 @@ object RecUtil {
     def getContext() : SparkContext = {
         val conf = new SparkConf().setAppName("Simple Recommendation Engine").setMaster("local[2]")
         val sc = new SparkContext(conf)
-        sc.setLogLevel("OFF")
-        Logger.getRootLogger().setLevel(Level.OFF)
+        sc.setLogLevel("ERROR")
+        Logger.getRootLogger().setLevel(Level.ERROR)
         
         sc
     }

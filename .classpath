@@ -124,6 +124,9 @@
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/com.github.fommil.netlib/core/jars/core-1.1.2.jar"/>
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.sourceforge.f2j/arpack_combined_all/jars/arpack_combined_all-0.1.jar"/>
   <classpathentry kind="lib" path="/home/daan/.ivy2/cache/net.sourceforge.f2j/arpack_combined_all/jars/arpack_combined_all-0.1-javadoc.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10/jars/scala-io-file_2.10-0.4.2.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10/jars/scala-io-core_2.10-0.4.2.jar"/>
+  <classpathentry kind="lib" path="/home/daan/.ivy2/cache/com.jsuereth/scala-arm_2.10/jars/scala-arm_2.10-1.3.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="output" path="bin"/>
 </classpath>

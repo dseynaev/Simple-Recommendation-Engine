@@ -2,22 +2,77 @@ import org.apache.spark._
 import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.graphx.lib.LabelPropagation
+import org.apache.commons.io.FileUtils;
+import java.io.File
+import java.io.IOException
 
 object OfflineRecEngine {
     
-    val dataset = "data/Amazon0505.txt"
-    // val dataset = "data/mini.txt"
+	type CommunityId = VertexId
+    val affSubDir = "affiliation_table"
+    val comSubDir = "community_table"
     
     def main(args: Array[String]) {
+        
+        val dataset = args(0)
+        val output = args(1)
+        println("reading from: " + dataset)
+        println("outputting to: " + output)
+        try {
+            FileUtils.deleteDirectory(new File(output)) }
+        catch { case e: IOException => println("nothing to remove")}
         
         val sc = RecUtil.getContext()
         val graph = RecUtil.loadGraph(sc, dataset)
         
-        // execute stuff
+        val t0 = System.nanoTime()
         
+        val affiliation = computeAffiliationTable(graph, output + affSubDir)
+        computeCommunityTable(affiliation, output + comSubDir)
+        
+        val t1 = System.nanoTime()
+        println("Elapsed time: " + (t1 - t0)/10e8 + " seconds")
+    }
+    
+	/**
+	 * Computes and writes to file the community affiliation for each product id.
+	 * 
+	 * @result A collection of pairs (productId, communityLabel)
+	 */
+    def computeAffiliationTable(graph: Graph[Int,Int], outDir: String)
+    		: RDD[(VertexId,CommunityId)] = {
+    	println("label propagation...")
+    	val affiliation = LabelPropagation.run(graph, 0).vertices
+        println("done")
+        
+        println("writing affiliation table\n")
+        affiliation.sortByKey().saveAsTextFile(outDir)
+        affiliation
     }
     
     /**
+     * Group products of the same affiliation and write the result to file
+     * 
+     * @result A collection of pairs (communityLabel, productGroup (String))
+     */
+    def computeCommunityTable(affiliation: RDD[(VertexId,CommunityId)], outDir: String)
+    		: RDD[(CommunityId,String)] = {
+    	println("grouping community members...")
+    	val nbProd = affiliation.count()
+    	val communities = affiliation.groupBy(_._2).mapValues(_.map(_._1).mkString(" "))
+    	val nbCom = communities.count()
+    	println("done, #communities: %s, avg. size: %s".format(nbCom,nbProd/nbCom));
+    	
+    	println("writing community table\n")
+    	communities.sortByKey().saveAsTextFile(outDir)
+    	
+    	communities
+    }
+        
+    /**
+     * Deprecated.
+     * 
      * Offline approach
      * Computes the (groupSize) closest vertices for each vertex
      * 
