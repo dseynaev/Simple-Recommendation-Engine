@@ -1,1 +1,2 @@
-rm *.log
+rm ./*.log
+rm -R output/*

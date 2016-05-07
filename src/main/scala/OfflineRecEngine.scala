@@ -17,8 +17,10 @@ object OfflineRecEngine {
         
         val dataset = args(0)
         val output = args(1)
+        val numIter = args(2).toInt
         println("reading from: " + dataset)
         println("outputting to: " + output)
+	println("#iterations: %s".format(numIter))
         try {
             FileUtils.deleteDirectory(new File(output)) }
         catch { case e: IOException => println("nothing to remove")}
@@ -28,7 +30,7 @@ object OfflineRecEngine {
         
         val t0 = System.nanoTime()
         
-        val affiliation = computeAffiliationTable(graph, output + affSubDir)
+        val affiliation = computeAffiliationTable(graph, numIter, output + affSubDir)
         computeCommunityTable(affiliation, output + comSubDir)
         
         val t1 = System.nanoTime()
@@ -40,10 +42,10 @@ object OfflineRecEngine {
 	 * 
 	 * @result A collection of pairs (productId, communityLabel)
 	 */
-    def computeAffiliationTable(graph: Graph[Int,Int], outDir: String)
+    def computeAffiliationTable(graph: Graph[Int,Int], numIter: Int, outDir: String)
     		: RDD[(VertexId,CommunityId)] = {
     	println("label propagation...")
-    	val affiliation = LabelPropagation.run(graph, 0).vertices
+    	val affiliation = LabelPropagation.run(graph, numIter).vertices
         println("done")
         
         println("writing affiliation table\n")
@@ -60,7 +62,7 @@ object OfflineRecEngine {
     		: RDD[(CommunityId,String)] = {
     	println("grouping community members...")
     	val nbProd = affiliation.count()
-    	val communities = affiliation.groupBy(_._2).mapValues(_.map(_._1).mkString(" "))
+    	val communities = affiliation.groupBy(_._2).mapValues(_.map(_._1).take(11).mkString(" "))
     	val nbCom = communities.count()
     	println("done, #communities: %s, avg. size: %s".format(nbCom,nbProd/nbCom));
     	
